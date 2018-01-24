@@ -318,9 +318,6 @@ class RefManager {
         }
       }();
 
-      console.warn('_itemId, _options:');
-      console.warn(_itemId, _options);
-
       if (_itemId) {
         return this.focus(this.get(collectionId, _itemId), {
           id: _itemId,
