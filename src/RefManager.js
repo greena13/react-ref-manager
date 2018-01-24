@@ -12,9 +12,9 @@ import FocusDirection from './FocusDirection';
  *          the ref cannot be found in the RefManager instance.
  * @property {ReactClassComponent|null} DOMRef The ref pointing to the actual element
  *          in the DOM that was focused. For standard React elements (<div>, <span>,
- *          <input> etc), this is the same as ref. For custom React elements, this is
- *          the ref to the backing elements in the DOM. Or null when the ref was not
- *          found in the DOM.
+ *          <input> etc), this is the same as ref. For custom React components that
+ *          don't define a focus() method, this is the ref to the backing elements
+ *          in the DOM. Or null when the ref was not found in the DOM.
  * @property {String|Number} id The value of the id option passed when a ref was
  *          last focused.
  * @property {String|Number} collectionId The collectionId option passed when a ref
@@ -33,9 +33,9 @@ import FocusDirection from './FocusDirection';
  *          when the ref cannot be found in the RefManager instance.
  * @property {ReactClassComponent|null} DOMRef The ref pointing to the actual element
  *          in the DOM that was scrolled to. For standard React elements (<div>, <span>,
- *          <input> etc), this is the same as ref. For custom React elements, this is
- *          the ref to the backing elements in the DOM. Or null when the ref was not
- *          found in the DOM.
+ *          <input> etc), this is the same as ref. For custom React components that don't
+ *          define a scrollIntoView() method, this is the ref to the backing elements
+ *          in the DOM. Or null when the ref was not found in the DOM.
  * @property {String|Number} id The value of the id option passed when a ref was
  *          last scrolled.
  * @property {String|Number} collectionId The collectionId option passed when a ref
@@ -65,17 +65,18 @@ class RefManager {
   /**
    * Focuses a ref in the DOM if it is mounted. This method does NOT update any
    * RefManager instance's focus object.
+   *
    * @param {ReactClassComponent} ref Ref to focus
    * @returns {ReactClassComponent|null} The ref pointing to the actual element in
    *          the DOM that was focused. For standard React elements (<div>, <span>,
    *          <input> etc), this is the same as the ref passed as the first argument.
-   *          For custom React elements, this is the ref to the backing elements in
-   *          the DOM. Alternatively, it returns null when the ref was undefined or
-   *          was not found in the DOM.
+   *          For custom React components that don't define a focus() method, this is
+   *          the ref to the backing elements in the DOM. Alternatively, it returns
+   *          null when the ref was undefined or was not found in the DOM.
    */
   static focus(ref) {
     if (ref) {
-      if (ref.focus && !!ref.parentNode) {
+      if (ref.focus) {
         ref.focus();
 
         return ref;
@@ -108,7 +109,7 @@ class RefManager {
    */
   static scrollTo(ref, options = NotProvided) {
     if (ref) {
-      if (ref.scrollIntoView  && !!ref.parentNode) {
+      if (ref.scrollIntoView) {
         ref.scrollIntoView();
 
         return ref;
@@ -317,6 +318,9 @@ class RefManager {
         }
       }();
 
+      console.warn('_itemId, _options:');
+      console.warn(_itemId, _options);
+
       if (_itemId) {
         return this.focus(this.get(collectionId, _itemId), {
           id: _itemId,
@@ -505,8 +509,8 @@ class RefManager {
    * Scrolls to a ref by an id and (optionally) collectionId that was used when
    * it was registered using set().
    *
-   * When the ref is a custom React component, it's backing DOM element ref will
-   * be located, and that will be used to scroll to.
+   * When the ref is a custom React component that doesn't define a scrollIntoView method,
+   * it's backing DOM element ref will be located, and that will be used to scroll to.
    *
    * @param {String|Number} collectionId The collectionId of the ref to be scrolled to,
    *        when it is an item in a collection of refs.

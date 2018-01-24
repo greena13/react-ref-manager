@@ -164,7 +164,7 @@ import { FocusDirection } from 'react-ref-manager';
 Focus objects are returned by all of the `focus*()` methods. A focus object has the following attributes:
 
 * `ref` - The ref that was last focused. `null` when the ref cannot be found in the `RefManager` instance.
-* `DOMRef` - The ref pointing to the actual element in the DOM that was focused. For standard React elements (`<div>`, `<span>`, `<input>` etc), this is the same as `ref`. For custom React elements, this is the ref to the backing elements in the DOM. `null` when the ref was not found in the DOM.
+* `DOMRef` - The ref pointing to the actual element in the DOM that was focused. For standard React elements (`<div>`, `<span>`, `<input>` etc), this is the same as `ref`. For custom React components that don't define a focus() method, this is the ref to the backing elements in the DOM. `null` when the ref was not found in the DOM.
 * `id` - The `itemId` option passed when a ref was last focused.
 * `collectionId` - The `collectionId` option passed when a ref was last focused.
 * `context` - The value of `context` at the time the ref was last focused. You can store any information about when the ref was focused that you later want to access, in here.
@@ -283,7 +283,7 @@ This is a class method.
 
 Focuses the ref passed as it first argument. This method does *not* update any `RefManager` instance's focus object.
 
-Returns the ref pointing to the actual element in the DOM that was focused. For standard React elements (`<div>`, `<span>`, `<input>` etc), this is the same as the `ref` passed as the first argument. For custom React elements, this is the ref to the backing elements in the DOM. Alternatively, it returns `null` when the `ref` was `undefined` or was not found in the DOM.
+Returns the ref pointing to the actual element in the DOM that was focused. For standard React elements (`<div>`, `<span>`, `<input>` etc), this is the same as the `ref` passed as the first argument. For custom React components thad don't define a focus() method, this is the ref to the backing elements in the DOM. Alternatively, it returns `null` when the `ref` was `undefined` or was not found in the DOM.
 
 ### Listening to changes in focus
 
@@ -326,7 +326,7 @@ componentWillUnmount(){
 Scroll objects are returned by all of the `scroll*()` methods. A scroll object has the following attributes:
 
 * `ref` - The ref that was scrolled to or `null` when the ref cannot be found in the `RefManager` instance.
-* `DOMRef` - The ref pointing to the actual element in the DOM that was scrolled to. For standard React elements (`<div>`, `<span>`, `<input>` etc), this is the same as `ref`. For custom React elements, this is the ref to the backing elements in the DOM. `null` is returned instead when the ref was not found in the DOM.
+* `DOMRef` - The ref pointing to the actual element in the DOM that was scrolled to. For standard React elements (`<div>`, `<span>`, `<input>` etc), this is the same as `ref`. For custom React components that don't define a focus() method, this is the ref to the backing elements in the DOM. `null` is returned instead when the ref was not found in the DOM.
 * `id` - The `id` of the ref that was scrolled to.
 * `collectionId` - The `collectionId` value passed as an argument when scrolling to the ref.
 * `applied` - Boolean that is true if the scroll attempt was successful. If `false`, see the `ref` and `DOMRef` values to determine whether the failure was because the ref could not be found in the `RefManager` instance, or in the DOM.
@@ -339,7 +339,7 @@ Scrolls to the ref passed to it as its first argument.
 
 It accepts an options hash as the second argument that is passed straight to [scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView).
 
-Returns the ref that was scrolled to (which may be different to the ref passed as an argument in the case of custom React elements), or `null` if the ref could not be located in the DOM.
+Returns the ref that was scrolled to (which may be different to the ref passed as an argument in the case of custom React elements that don't define a scrollIntoView() method), or `null` if the ref could not be located in the DOM.
 
 #### scrollToById()
 
@@ -347,7 +347,7 @@ Scrolls to a ref by the `id` and (optionally) `collectionId` that was used when 
 
 An options hash may be passed as the final argument. These options are passed straight to [scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView).
 
-When the ref is a custom React component, it's backing DOM element ref will be located, and that will be used to scroll to.
+When the ref is a custom React component that doesn't define a scrollIntoView() method, it's backing DOM element ref will be located, and that will be used to scroll to.
 
 Returns a scroll object.
 
