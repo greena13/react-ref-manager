@@ -430,13 +430,12 @@ class RefManager {
       };
     }
 
-    const { id } = this.getCurrentFocus();
+    const currentFocus = this.getCurrentFocus();
 
     const indexesToUse = indexes ? indexes : Object.keys(refCollection);
-    const refIdsIndex = indexesToUse.indexOf(id);
+    const refIdsIndex = indexesToUse.indexOf(currentFocus.id);
 
-    if (refIdsIndex === -1) {
-
+    if (currentFocus.collectionId !== collectionId || refIdsIndex === -1) {
       const firstRefId = indexesToUse[0];
 
       return this.focus(refCollection[firstRefId], { id: firstRefId, collectionId, context });
