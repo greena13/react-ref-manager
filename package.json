@@ -1,6 +1,6 @@
 {
   "name": "react-ref-manager",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Manage, focus and scroll to Elements or React components (refs)",
   "main": "lib/index.js",
   "scripts": {
