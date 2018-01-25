@@ -4,7 +4,7 @@
   "description": "Manage, focus and scroll to Elements or React components (refs)",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "babel --presets=es2015,stage-0 src -d lib"
+    "prepublish": "babel --presets=es2015,stage-0 src -d lib && cp src/index.d.ts lib/index.d.ts"
   },
   "repository": {
     "type": "git",
