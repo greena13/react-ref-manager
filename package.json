@@ -4,7 +4,7 @@
   "description": "Manage, focus and scroll to Elements or React components (refs)",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "babel --presets=es2015,stage-0 src -d lib && cp src/index.d.ts lib/index.d.ts"
+    "prepublish": "babel --presets=es2015,stage-0 src -d lib"
   },
   "repository": {
     "type": "git",
@@ -19,8 +19,10 @@
   "files": [
     "lib",
     "package.json",
-    "Readme.md"
+    "Readme.md",
+    "index.d.ts"
   ],
+  "typings": "./index.d.ts",
   "author": "Aleck Greenham",
   "license": "ISC",
   "bugs": {

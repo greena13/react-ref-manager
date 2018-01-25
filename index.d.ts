@@ -55,7 +55,7 @@ module RefManager {
 
         focusNext(collectionId: { [key: string]: React.Component }, options?: { direction?: FocusDirection, indexes?: Array<string | number>, collectionWidth?: number, yWrap?: boolean, xWrap?: boolean, context?: any }): FocusObject;
 
-        scrollById(collectionId: string | number , itemIdOrOptions: any, options?: any): ScrollObject;
+        scrollToById(collectionId: string | number , itemIdOrOptions: any, options?: any): ScrollObject;
 
         scrollToFocused(options?: any): ScrollObject;
 
