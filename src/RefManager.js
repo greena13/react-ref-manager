@@ -443,7 +443,7 @@ class RefManager {
           const nextRefIndex = refIdsIndex - 1;
 
           if (nextRefIndex >= 0) {
-            return indexesToUse[refIdsIndex - 1];
+            return indexesToUse[nextRefIndex];
           } else {
             if (xWrap) {
               return indexesToUse[indexesToUse.length - 1];
@@ -457,7 +457,7 @@ class RefManager {
           const nextRefIndex = refIdsIndex + 1;
 
           if (nextRefIndex < indexesToUse.length) {
-            return indexesToUse[refIdsIndex + 1];
+            return indexesToUse[nextRefIndex];
           } else {
             if (xWrap) {
               return indexesToUse[0];
@@ -470,7 +470,7 @@ class RefManager {
           const nextRefIndex = refIdsIndex - collectionWidth;
 
           if (nextRefIndex >= 0) {
-            return indexesToUse[refIdsIndex - collectionWidth];
+            return indexesToUse[nextRefIndex];
           } else {
             if (yWrap) {
               return indexesToUse[indexesToUse.length - 1];
@@ -484,7 +484,7 @@ class RefManager {
           const nextRefIndex = refIdsIndex + collectionWidth;
 
           if (nextRefIndex < indexesToUse.length) {
-            return indexesToUse[refIdsIndex + collectionWidth];
+            return indexesToUse[nextRefIndex];
           } else {
             if (yWrap) {
               return indexesToUse[0];
