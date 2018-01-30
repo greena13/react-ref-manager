@@ -157,15 +157,15 @@ class RefManager {
    */
   set(collectionId, itemIdOrRef = NotProvided, ref = NotProvided) {
     if (ref === NotProvided) {
-      this._refs[collectionId] = itemIdOrRef;
+      this._refs[collectionId] = { ref: itemIdOrRef, key: collectionId };
     } else {
       const collectionRef = this._refs[collectionId];
 
       if (!collectionRef) {
-        this._refs[collectionId] = {};
+        this._refs[collectionId] = { };
       }
 
-      this._refs[collectionId][itemIdOrRef] = ref;
+      this._refs[collectionId][itemIdOrRef] = { ref, key: itemIdOrRef };
     }
   }
 
@@ -187,7 +187,19 @@ class RefManager {
    * this.refManager.get('items', index)
    */
   get(collectionId = NotProvided, itemId = NotProvided) {
-    return this._refs && itemId === NotProvided ? this._refs[collectionId] : this._refs[collectionId] && this._refs[collectionId][itemId];
+    const refObject = this._get(collectionId, itemId);
+
+    return (refObject && refObject.ref) || refObject;
+  }
+
+  _get(collectionId = NotProvided, itemId = NotProvided) {
+    const refCollection = this._refs[collectionId];
+
+    if (itemId === NotProvided) {
+      return refCollection;
+    } else {
+      return refCollection && refCollection[itemId];
+    }
   }
 
   /**
@@ -319,8 +331,10 @@ class RefManager {
       }();
 
       if (_itemId) {
-        return this.focus(this.get(collectionId, _itemId), {
-          id: _itemId,
+        const refObject = this._get(collectionId, _itemId);
+
+        return this.focus(refObject && refObject.ref, {
+          id: refObject && refObject.key,
           collectionId,
           ..._options
         });
@@ -333,9 +347,11 @@ class RefManager {
       }
 
     } else {
-      return this.focus(this.get(collectionId, itemIdOrOptions), {
+      const refObject = this.get(collectionId, itemIdOrOptions);
+
+      return this.focus(refObject && refObject.ref, {
         ...options,
-        id: itemIdOrOptions,
+        id: refObject && refObject.key,
         collectionId,
       });
     }
@@ -379,7 +395,7 @@ class RefManager {
 
     return this.focusNext(refCollection, {
       ...options,
-      collectionId: collectionId,
+      collectionId,
     });
   }
 
@@ -429,13 +445,17 @@ class RefManager {
 
     const currentFocus = this.getCurrentFocus();
 
-    const indexesToUse = indexes ? indexes.map((index) => index.toString()) : Object.keys(refCollection);
-    const refIdsIndex = indexesToUse.indexOf(currentFocus.id && currentFocus.id.toString());
+    const _indexes = indexes ? indexes : Object.keys(refCollection);
+
+    const stringifiedIndexes = _indexes.map((index) => index.toString());
+
+    const refIdsIndex = stringifiedIndexes.indexOf(typeof currentFocus.id !== 'undefined' && currentFocus.id.toString());
 
     if (currentFocus.collectionId !== collectionId || refIdsIndex === -1) {
-      const firstRefId = indexesToUse[0];
+      const firstRefId = _indexes[0];
+      const firstRefObject = this._get(collectionId, firstRefId);
 
-      return this.focus(refCollection[firstRefId], { id: firstRefId, collectionId, context });
+      return this.focus(firstRefObject && firstRefObject.ref, { id: firstRefObject && firstRefObject.key, collectionId, context });
     } else {
 
       const nextRefId = function(){
@@ -443,12 +463,12 @@ class RefManager {
           const nextRefIndex = refIdsIndex - 1;
 
           if (nextRefIndex >= 0) {
-            return indexesToUse[nextRefIndex];
+            return _indexes[nextRefIndex];
           } else {
             if (xWrap) {
-              return indexesToUse[indexesToUse.length - 1];
+              return _indexes[_indexes.length - 1];
             } else {
-              return indexesToUse[0];
+              return _indexes[0];
             }
           }
 
@@ -456,13 +476,13 @@ class RefManager {
 
           const nextRefIndex = refIdsIndex + 1;
 
-          if (nextRefIndex < indexesToUse.length) {
-            return indexesToUse[nextRefIndex];
+          if (nextRefIndex < _indexes.length) {
+            return _indexes[nextRefIndex];
           } else {
             if (xWrap) {
-              return indexesToUse[0];
+              return _indexes[0];
             } else {
-              return indexesToUse[indexesToUse.length - 1];
+              return _indexes[_indexes.length - 1];
             }
           }
 
@@ -470,12 +490,12 @@ class RefManager {
           const nextRefIndex = refIdsIndex - collectionWidth;
 
           if (nextRefIndex >= 0) {
-            return indexesToUse[nextRefIndex];
+            return _indexes[nextRefIndex];
           } else {
             if (yWrap) {
-              return indexesToUse[indexesToUse.length - 1];
+              return _indexes[_indexes.length - 1];
             } else {
-              return indexesToUse[0];
+              return _indexes[0];
             }
           }
 
@@ -483,21 +503,21 @@ class RefManager {
 
           const nextRefIndex = refIdsIndex + collectionWidth;
 
-          if (nextRefIndex < indexesToUse.length) {
-            return indexesToUse[nextRefIndex];
+          if (nextRefIndex < _indexes.length) {
+            return _indexes[nextRefIndex];
           } else {
             if (yWrap) {
-              return indexesToUse[0];
+              return _indexes[0];
             } else {
-              return indexesToUse[indexesToUse.length - collectionWidth];
+              return _indexes[_indexes.length - collectionWidth];
             }
           }
         }
       }();
 
-      const nextRef = refCollection[nextRefId];
+      const nextRefObject = refCollection[nextRefId];
 
-      return this.focus(nextRef, { id: nextRefId, collectionId, context });
+      return this.focus(nextRefObject && nextRefObject.ref, { id: nextRefObject && nextRefObject.key, collectionId, context });
     }
   }
 
@@ -536,14 +556,14 @@ class RefManager {
       }
     }();
 
-    const ref = this.get(collectionId, _itemId);
+    const refObject = this._get(collectionId, _itemId);
 
-    if (ref) {
-      const scrolledToRef = this.constructor.scrollTo(ref.DOMRef, _options);
+    if (refObject) {
+      const scrolledToRef = this.constructor.scrollTo(refObject.ref, _options);
 
       return {
-        id: _itemId, collectionId,
-        ref,
+        id: refObject.key, collectionId,
+        ref: refObject.ref,
         DOMRef: scrolledToRef,
         applied: !!scrolledToRef
       };
