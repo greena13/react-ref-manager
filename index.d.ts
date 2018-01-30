@@ -49,7 +49,7 @@ module RefManager {
 
         focus(ref: React.Component, options: { id?: string | number, collectionId: string | number, context?: any }): FocusObject;
 
-        focusById(collectionId: string | number , itemIdOrOptions: string | number | { context?: any }, options?: { context?: any }): FocusObject;
+        focusById(collectionId: string | number , itemIdOrOptions?: string | number | { context?: any }, options?: { context?: any }): FocusObject;
 
         focusNextById(collectionId: string | number , options?: { direction?: FocusDirection, indexes?: Array<string | number>, collectionWidth?: number, yWrap?: boolean, xWrap?: boolean , context?: any }): FocusObject;
 
