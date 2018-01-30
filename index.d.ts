@@ -28,7 +28,7 @@ module RefManager {
         DOWN = 'DOWN'
     }
 
-    export class RefManager {
+    export default class RefManager {
         constructor();
 
         static refIsFocused(ref: React.Component): boolean;

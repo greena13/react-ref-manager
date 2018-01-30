@@ -1,2 +1,4 @@
 export FocusDirection from './FocusDirection';
-export RefManager from './RefManager';
+import RefManager from './RefManager';
+
+export default RefManager;

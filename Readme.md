@@ -13,7 +13,7 @@ React renders to the DOM and generates refs, which `react-ref-manager` stores an
 ## Basic Usage
 
 ```javascript
-import { RefManager, FocusDirection } from 'react-ref-manager';
+import RefManager, { FocusDirection } from 'react-ref-manager';
 
 class MyComponent extends Component {
     constructor(props, context) {
