@@ -1,5 +1,8 @@
 # React Ref Manager
 
+[![npm](https://img.shields.io/npm/dm/react-ref-manager.svg)]()
+[![GitHub license](https://img.shields.io/github/license/greena13/react-ref-manager.svg)](https://github.com/greena13/react-ref-manager/blob/master/LICENSE)
+
 Manage, focus and scroll to `Element`s or React `Component`s (refs) in a standard manner.
 
 ## Overview
