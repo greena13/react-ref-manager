@@ -2,7 +2,7 @@
   "name": "react-ref-manager",
   "version": "1.2.0",
   "description": "Manage, focus and scroll to Elements or React components (refs)",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "prepublish": "rm -rf cjs && npm run build-development && npm run build-production",
     "build-development": "BABEL_ENV=development NODE_ENV=development rollup -c",
